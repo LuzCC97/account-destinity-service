@@ -16,13 +16,16 @@ public class AccountDestinyController {
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<AccountInfo> getAccountDestiny(@PathVariable String accountId) {
+    public ResponseEntity<?> getAccountDestiny(@PathVariable String accountId) {
 
         AccountInfo info = accountDestinyService.validateAccount(accountId);
 
         if (info == null) {
             // equivale al 404 que pusiste en el swagger
-            return ResponseEntity.notFound().build();
+            String message = "La cuenta ID " + accountId + " no existe o no esta activa.";
+            return ResponseEntity
+                    .status(404)
+                    .body(message);
         }
 
         return ResponseEntity.ok(info);
